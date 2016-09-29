@@ -1,22 +1,32 @@
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.1.3'
-
-        // NOTE: Do not place your application dependencies here; they belong
-        // in the individual module build.gradle files
+        classpath 'com.android.tools.build:gradle:2.2.0'
+        classpath 'com.github.dcendents:android-maven-gradle-plugin:1.4.1'
     }
 }
+
+plugins {
+    id "com.jfrog.bintray" version "1.5"
+}
+
+group = 'net.mabboud'
+version = '0.1'
 
 allprojects {
     repositories {
         jcenter()
     }
+    apply plugin: 'com.android.library'
+    apply plugin: 'com.github.dcendents.android-maven'
 }
 
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion 23
@@ -26,7 +36,7 @@ android {
         minSdkVersion 15
         targetSdkVersion 23
         versionCode 1
-        versionName "1.0"
+        versionName "0.1"
     }
     buildTypes {
         release {
@@ -42,5 +52,67 @@ dependencies {
     androidTestCompile 'org.testng:testng:6.9.6'
     androidTestCompile 'com.android.support.test:runner:0.4'
     androidTestCompile 'com.android.support.test:rules:0.4'
-    androidTestCompile 'com.android.support.test.uiautomator:uiautomator-v18:2.1.2'
 }
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name 'Android-tone-player'
+            description 'A Tone player/generator/buzzer for Android'
+            url 'https://github.com/m-abboud/android-tone-player'
+            inceptionYear '2016'
+            groupId 'net.mabboud'
+            artifactId 'android-tone-player'
+            version '0.1'
+            packaging 'aar'
+
+            licenses {
+                license {
+                    name 'GNU Lesser General Public License 3.0'
+                    url 'http://www.gnu.org/licenses/lgpl-3.0.txt'
+                    distribution 'repo'
+                }
+            }
+            scm {
+                connection 'https://github.com/m-abboud/android-tone-player.git'
+                url 'https://github.com/m-abboud/android-tone-player'
+            }
+
+            developers {
+                developer {
+                    id 'm-abboud'
+                    name 'Maddie Abboud'
+                    email 'maddie.abboud@gmail.com'
+                }
+            }
+        }
+    }
+}
+
+bintray {
+    user = project.hasProperty('bintrayUser') ? project.property('bintrayUser') : System.getenv('BINTRAY_USER')
+    key = project.hasProperty('bintrayApiKey') ? project.property('bintrayApiKey') : System.getenv('BINTRAY_API_KEY')
+
+    configurations = ['archives']
+    pkg {
+        repo = 'maven'
+        name = 'android-tone-player'
+        licenses = ['LGPL-3.0']
+        vcsUrl = 'https://github.com/m-abboud/android-tone-player.git'
+        version {
+            name = '0.1'
+        }
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.4'
+}
+
+ext {
+    PUBLISH_GROUP_ID = 'net.mabboud'
+    PUBLISH_ARTIFACT_ID = 'android-tone-player'
+    PUBLISH_VERSION = '0.1'
+}
+
+apply from: 'https://raw.githubusercontent.com/blundell/release-android-library/master/android-release-aar.gradle'
