@@ -11,7 +11,7 @@ public class OneTimeBuzzer extends TonePlayer {
         this.duration = duration;
     }
 
-    OneTimeBuzzer() {
+    public OneTimeBuzzer() {
     }
 
     public double getDuration() {

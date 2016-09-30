@@ -7,18 +7,31 @@ public class ContinuousBuzzer extends TonePlayer{
     protected double pausePeriodSeconds = 5;
     protected int pauseTimeInMs = 1;
 
+    /**
+     * The time the buzzer should pause for every cycle in milliseconds.
+     */
     public int getPauseTimeInMs() {
         return pauseTimeInMs;
     }
 
+    /**
+     * The time the buzzer should pause for every cycle in milliseconds.
+     */
     public void setPauseTimeInMs(int pauseTimeInMs) {
         this.pauseTimeInMs = pauseTimeInMs;
     }
 
+    /**
+     * The time period between when a buzzer pause should occur in seconds.
+     */
     public double getPausePeriodSeconds() {
         return pausePeriodSeconds;
     }
 
+    /**
+     * The time period between when a buzzer pause should occur in seconds.
+     * IE pause the buzzer every X/pausePeriod seconds.
+     */
     public void setPausePeriodSeconds(double pausePeriodSeconds) {
         this.pausePeriodSeconds = pausePeriodSeconds;
     }
