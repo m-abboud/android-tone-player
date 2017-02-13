@@ -36,13 +36,14 @@ public class ContinuousBuzzer extends TonePlayer{
         this.pausePeriodSeconds = pausePeriodSeconds;
     }
 
-    protected void asyncPlayTrack(final double toneFreqInHz) {
+    protected void asyncPlayTrack() {
         playerWorker = new Thread(new Runnable() {
             public void run() {
                 while (isPlaying) {
                     // will pause every x seconds useful for determining when a certain amount
                     // of time has passed while whatever the buzzer is signaling is active
-                    playTone(toneFreqInHz, pausePeriodSeconds);
+                             // (if pause time not increased then continuous tone)
+                    playTone(pausePeriodSeconds, (pauseTimeInMs <= 1));
                     try {
                         Thread.sleep(pauseTimeInMs);
                     } catch (InterruptedException e) {
