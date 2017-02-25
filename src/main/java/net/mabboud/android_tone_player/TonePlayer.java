@@ -17,8 +17,8 @@ public abstract class TonePlayer {
 
     protected double lastToneFreqInHz = 0.0;
     protected int lastNumSamplesCount = 0;
-    protected double lastDoubleSampleArr[] = null;
-    protected byte lastSoundDataArr[] = null;
+    protected double lastDoubleSamples[] = null;
+    protected byte lastSoundBytes[] = null;
 
 
     public TonePlayer() {
@@ -55,13 +55,13 @@ public abstract class TonePlayer {
     }
 
     public double getToneFreqInHz() {
-        synchronized(toneFreqInHzSyncObj) {
+        synchronized (toneFreqInHzSyncObj) {
             return toneFreqInHz;
         }
     }
 
     public void setToneFreqInHz(double toneFreqInHz) {
-        synchronized(toneFreqInHzSyncObj) {
+        synchronized (toneFreqInHzSyncObj) {
             this.toneFreqInHz = toneFreqInHz;
         }
     }
@@ -98,18 +98,21 @@ public abstract class TonePlayer {
 
         double sample[];
         byte soundData[];
-        if(numSamples == lastNumSamplesCount) {
-            if(freqInHz == lastToneFreqInHz) {            //if same tone then
-                playSound(sampleRate, lastSoundDataArr);  //repeat with same data
+        if (numSamples == lastNumSamplesCount) {
+            // if same tone then
+            if (freqInHz == lastToneFreqInHz) {
+                // repeat with same data
+                playSound(sampleRate, lastSoundBytes);
                 return;
             }
-               //different tone freq but same duration
-            sample = lastDoubleSampleArr;         //reuse arrays
-            soundData = lastSoundDataArr;
-        }
-        else {  //different duration; create (and save) new arrays
-            sample = lastDoubleSampleArr = new double[numSamples];
-            soundData = lastSoundDataArr = new byte[2 * numSamples];
+            
+            // different tone freq but same duration
+            // reuse arrays
+            sample = lastDoubleSamples;
+            soundData = lastSoundBytes;
+        } else {  //different duration; create (and save) new arrays
+            sample = lastDoubleSamples = new double[numSamples];
+            soundData = lastSoundBytes = new byte[2 * numSamples];
             lastNumSamplesCount = numSamples;
         }
         lastToneFreqInHz = freqInHz;
@@ -169,13 +172,17 @@ public abstract class TonePlayer {
     protected void playSound(int sampleRate, byte[] soundData) {
         try {
             int bufferSize = AudioTrack.getMinBufferSize(sampleRate, AudioFormat.CHANNEL_OUT_MONO, AudioFormat.ENCODING_PCM_16BIT);
-                   //if buffer-size changing or no previous obj then allocate:
-            if(bufferSize != audTrackBufferSize || audioTrack == null) {
-                if(audioTrack != null) {
-                    audioTrack.pause();          //release previous object
+
+            //if buffer-size changing or no previous obj then allocate:
+            if (bufferSize != audTrackBufferSize || audioTrack == null) {
+                if (audioTrack != null) {
+                    //release previous object
+                    audioTrack.pause();
                     audioTrack.flush();
                     audioTrack.release();
-                }                                //allocate new object:
+                }
+
+                //allocate new object:
                 audioTrack = new AudioTrack(AudioManager.STREAM_MUSIC,
                         sampleRate, AudioFormat.CHANNEL_OUT_MONO,
                         AudioFormat.ENCODING_PCM_16BIT, bufferSize,
