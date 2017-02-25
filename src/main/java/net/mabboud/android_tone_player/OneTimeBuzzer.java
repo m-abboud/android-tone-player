@@ -26,7 +26,7 @@ public class OneTimeBuzzer extends TonePlayer {
         playerWorker = new Thread(new Runnable() {
             public void run() {
                 playTone(duration);
-                stop();                //stop after sound played (one time)
+                stop();
             }
         });
 

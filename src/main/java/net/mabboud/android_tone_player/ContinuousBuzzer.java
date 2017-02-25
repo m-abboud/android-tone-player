@@ -3,7 +3,7 @@ package net.mabboud.android_tone_player;
 /**
  * A buzzer that will continue playing until stop() is called.
  */
-public class ContinuousBuzzer extends TonePlayer{
+public class ContinuousBuzzer extends TonePlayer {
     protected double pausePeriodSeconds = 5;
     protected int pauseTimeInMs = 1;
 
@@ -42,7 +42,7 @@ public class ContinuousBuzzer extends TonePlayer{
                 while (isPlaying) {
                     // will pause every x seconds useful for determining when a certain amount
                     // of time has passed while whatever the buzzer is signaling is active
-                             // (if pause time not increased then continuous tone)
+                    // (if pause time not increased then continuous tone)
                     playTone(pausePeriodSeconds, (pauseTimeInMs <= 1));
                     try {
                         Thread.sleep(pauseTimeInMs);

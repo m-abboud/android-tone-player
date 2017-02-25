@@ -105,7 +105,7 @@ public abstract class TonePlayer {
                 playSound(sampleRate, lastSoundBytes);
                 return;
             }
-            
+
             // different tone freq but same duration
             // reuse arrays
             sample = lastDoubleSamples;
