@@ -16,7 +16,7 @@ plugins {
 ext {
     PUBLISH_GROUP_ID = 'net.mabboud'
     PUBLISH_ARTIFACT_ID = 'android-tone-player'
-    PUBLISH_VERSION = '0.2'
+    PUBLISH_VERSION = '0.3'
 }
 
 group = project.PUBLISH_GROUP_ID
@@ -41,7 +41,7 @@ android {
     defaultConfig {
         minSdkVersion 15
         targetSdkVersion 23
-        versionCode 1
+        versionCode 2
         versionName version
     }
     buildTypes {
