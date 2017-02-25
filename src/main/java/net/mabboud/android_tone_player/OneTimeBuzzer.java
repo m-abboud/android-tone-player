@@ -22,10 +22,11 @@ public class OneTimeBuzzer extends TonePlayer {
         this.duration = duration;
     }
 
-    protected void asyncPlayTrack(final double toneFreqInHz) {
+    protected void asyncPlayTrack() {
         playerWorker = new Thread(new Runnable() {
             public void run() {
-                playTone(toneFreqInHz, duration);
+                playTone(duration);
+                stop();                //stop after sound played (one time)
             }
         });
 
